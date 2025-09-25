@@ -18,7 +18,15 @@
       <div v-if="!previewUrl" class="placeholder">
         <p>Preview website akan tampil disini.</p>
       </div>
-      <iframe v-if="previewUrl" :src="previewUrl" frameborder="0"></iframe>
+
+      <!-- Tampilkan loader saat iframe masih loading -->
+      <div v-if="isLoading" class="loader">
+        <div class="spinner"></div>
+        <p>Sedang memuat...</p>
+      </div>
+
+      <iframe v-if="previewUrl" :src="previewUrl" frameborder="0" @load="handleIframeLoad"
+        :style="{ display: isLoading ? 'none' : 'block' }"></iframe>
     </div>
   </div>
 </template>
@@ -29,14 +37,20 @@ import { ref } from 'vue'
 const targetIp = ref('')
 const targetHost = ref('')
 const previewUrl = ref<string | null>(null)
+const isLoading = ref(false)
 
 const loadPreview = () => {
   if (targetIp.value && targetHost.value) {
+    isLoading.value = true
     // Construct the URL that our server middleware will intercept
     previewUrl.value = `/?target_ip=${targetIp.value}&target_host=${targetHost.value}`
   } else {
     alert('Mohon masukan IP A record dan nama domain.')
   }
+}
+
+const handleIframeLoad = () => {
+  isLoading.value = false
 }
 </script>
 
@@ -122,5 +136,31 @@ button:hover {
 iframe {
   width: 100%;
   height: 100%;
+}
+
+.loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ccc;
+  border-top-color: #1a73e8;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>
