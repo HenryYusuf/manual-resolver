@@ -1,22 +1,22 @@
 <template>
   <div class="container">
     <header>
-      <h1>Website IP Previewer 🛰️</h1>
+      <h1>Force DNS Record /w Proxy</h1>
       <p>
-        Enter a target IP address and the hostname (domain) it should respond to.
-        The website will be loaded in the frame below without modifying your DNS or hosts file.
+        Masukkan IP A record dan nama domain yang ingin kamu preview.
+        Tampilan website akan muncul pada iframe dibawah tanpa mengubah DNS Domain atau IP A record asli kamu.
       </p>
     </header>
 
     <div class="controls">
-      <input type="text" v-model="targetIp" placeholder="Enter Target IP (e.g., 93.184.216.34)" />
-      <input type="text" v-model="targetHost" placeholder="Enter Target Host (e.g., example.com)" />
-      <button @click="loadPreview">Load Preview</button>
+      <input type="text" v-model="targetIp" placeholder="Masukkan target IP (e.g., 93.184.216.34)" />
+      <input type="text" v-model="targetHost" placeholder="Masukkan nama domain (e.g., example.com)" />
+      <button @click="loadPreview">Lihat Preview</button>
     </div>
 
     <div class="preview-area">
       <div v-if="!previewUrl" class="placeholder">
-        <p>The preview will appear here.</p>
+        <p>Preview website akan tampil disini.</p>
       </div>
       <iframe v-if="previewUrl" :src="previewUrl" frameborder="0"></iframe>
     </div>
@@ -32,10 +32,10 @@ const previewUrl = ref<string | null>(null)
 
 const loadPreview = () => {
   if (targetIp.value && targetHost.value) {
-
+    // Construct the URL that our server middleware will intercept
     previewUrl.value = `/?target_ip=${targetIp.value}&target_host=${targetHost.value}`
   } else {
-    alert('Please enter both an IP address and a Hostname.')
+    alert('Mohon masukan IP A record dan nama domain.')
   }
 }
 </script>
