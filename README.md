@@ -10,14 +10,7 @@ Make sure to install dependencies:
 # npm
 npm install
 
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+# Percobaan
 ```
 
 ## Development Server
